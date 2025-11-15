@@ -1,7 +1,8 @@
 import axios from "axios";
 
 const API = axios.create({
-  baseURL: "https://delivery-tracker-app-five.vercel.app",
+  baseURL: "https://delivery-tracker-app-jmw3.vercel.app",
+
 // your backend URL
 });
 
