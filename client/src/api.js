@@ -1,7 +1,8 @@
 import axios from "axios";
 
 const API = axios.create({
-  baseURL: "https://delivery-tracker-app-jmw3-7tlj9mew3.vercel.app",// your backend URL
+  baseURL: "https://delivery-tracker-app-five.vercel.app",
+// your backend URL
 });
 
 export const createOrder = (orderData) => API.post("/orders", orderData);
