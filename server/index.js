@@ -1,26 +1,18 @@
+// server/index.js
 import express from "express";
 import cors from "cors";
 import { db } from "./firebase-key.js";
-import {
-  collection,
-  addDoc,
-  getDocs,
-  updateDoc,
-  doc
-} from "firebase/firestore";
 
 const app = express();
 
-// 👇👇👇 ADD HERE — right after creating app
 app.use(cors());
-app.options("*", cors());   // required for POST on Vercel
+app.options("*", cors());
 app.use(express.json());
-// 👆👆👆 PLACE IT EXACTLY HERE
 
 // GET all orders
 app.get("/orders", async (req, res) => {
   try {
-    const snap = await getDocs(collection(db, "orders"));
+    const snap = await db.collection("orders").get();
     const result = snap.docs.map(d => ({ id: d.id, ...d.data() }));
     res.json(result);
   } catch (err) {
@@ -36,7 +28,11 @@ app.post("/orders", async (req, res) => {
 
     const { name, item } = req.body;
 
-    const docRef = await addDoc(collection(db, "orders"), {
+    if (!name || !item) {
+      return res.status(400).json({ error: "Missing name or item" });
+    }
+
+    const docRef = await db.collection("orders").add({
       name,
       item,
       status: "Accepted"
@@ -55,8 +51,12 @@ app.put("/orders/:id", async (req, res) => {
     const { id } = req.params;
     const { status } = req.body;
 
-    const orderRef = doc(db, "orders", id);
-    await updateDoc(orderRef, { status });
+    if (!status) {
+      return res.status(400).json({ error: "Missing status" });
+    }
+
+    const orderRef = db.collection("orders").doc(id);
+    await orderRef.update({ status });
 
     res.json({ message: "Order updated" });
   } catch (err) {
@@ -65,5 +65,5 @@ app.put("/orders/:id", async (req, res) => {
   }
 });
 
-// ❗ DO NOT use app.listen() on Vercel
+// export app for Vercel
 export default app;
