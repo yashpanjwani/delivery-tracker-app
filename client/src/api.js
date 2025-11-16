@@ -7,4 +7,5 @@ const API = axios.create({
 
 export const createOrder = (orderData) => API.post("/orders", orderData);
 export const getOrders = () => API.get("/orders");
-export const updateOrder = (id, status) => API.patch(`/orders/${id}`, { status });
+export const updateOrder = (id, status) => API.put(`/orders/${id}`, { status });
+
