@@ -4,11 +4,11 @@ import { db } from "./firebase-key.js";
 
 const app = express();
 
-// 🔥 CHANGE #1 — Add specific CORS config
+// ✅ Correct CORS configuration
 app.use(cors({
   origin: [
-    "http://localhost:3000", 
-    "https://your-vercel-app.vercel.app"   // 🔥 replace this after Vercel deploy
+    "http://localhost:3000",
+    "https://delivery-tracker-app-nine.vercel.app"  // ← your real Vercel domain
   ],
   methods: ["GET", "POST", "PUT", "DELETE"],
   credentials: true
@@ -31,8 +31,6 @@ app.get("/orders", async (req, res) => {
 // CREATE new order
 app.post("/orders", async (req, res) => {
   try {
-    console.log("BODY:", req.body);
-
     const { name, item } = req.body;
 
     if (!name || !item) {
@@ -62,8 +60,7 @@ app.put("/orders/:id", async (req, res) => {
       return res.status(400).json({ error: "Missing status" });
     }
 
-    const orderRef = db.collection("orders").doc(id);
-    await orderRef.update({ status });
+    await db.collection("orders").doc(id).update({ status });
 
     res.json({ message: "Order updated" });
   } catch (err) {
@@ -72,9 +69,8 @@ app.put("/orders/:id", async (req, res) => {
   }
 });
 
-// 🔥 CHANGE #2 — Add proper PORT for Render (REQUIRED)
+// ✅ Required for Render
 const PORT = process.env.PORT || 5000;
-
 app.listen(PORT, () => {
   console.log(`🚀 Server running on port ${PORT}`);
 });
