@@ -3,6 +3,10 @@ import cors from "cors";
 import { db } from "./firebase-key.js";
 
 const app = express();
+app.get("/", (req, res) => {
+  res.send("Server is running…");
+});
+
 
 // ✅ Correct CORS configuration
 app.use(cors({
