@@ -10,9 +10,12 @@ import {
 } from "firebase/firestore";
 
 const app = express();
+
+// 👇👇👇 ADD HERE — right after creating app
 app.use(cors());
-app.options("*", cors());   // <--- REQUIRED FOR POST ON VERCEL
+app.options("*", cors());   // required for POST on Vercel
 app.use(express.json());
+// 👆👆👆 PLACE IT EXACTLY HERE
 
 // GET all orders
 app.get("/orders", async (req, res) => {
@@ -29,6 +32,8 @@ app.get("/orders", async (req, res) => {
 // CREATE new order
 app.post("/orders", async (req, res) => {
   try {
+    console.log("BODY:", req.body);
+
     const { name, item } = req.body;
 
     const docRef = await addDoc(collection(db, "orders"), {
@@ -37,14 +42,14 @@ app.post("/orders", async (req, res) => {
       status: "Accepted"
     });
 
-    res.json({ id: docRef.id, message: "Order created" });
+    res.status(201).json({ id: docRef.id, message: "Order created" });
   } catch (err) {
     console.error("❌ Create error:", err);
     res.status(500).json({ error: "Failed to create order" });
   }
 });
 
-// UPDATE order status
+// UPDATE order
 app.put("/orders/:id", async (req, res) => {
   try {
     const { id } = req.params;
@@ -60,5 +65,5 @@ app.put("/orders/:id", async (req, res) => {
   }
 });
 
-// ❗ DO NOT use app.listen() — Vercel handles this automatically
+// ❗ DO NOT use app.listen() on Vercel
 export default app;
