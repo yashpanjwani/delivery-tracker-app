@@ -11,6 +11,7 @@ import {
 
 const app = express();
 app.use(cors());
+app.options("*", cors());   // <--- REQUIRED FOR POST ON VERCEL
 app.use(express.json());
 
 // GET all orders
