@@ -1,14 +1,9 @@
-import { initializeApp } from "firebase/app";
-import { getFirestore } from "firebase/firestore";
+import admin from "firebase-admin";
 
-const firebaseConfig = {
-  apiKey: "AIzaSyCXLWIBBq-je2fS_0UrWdcvQWzYl8SV_gg",
-  authDomain: "deliverytrackerapp-bc126.firebaseapp.com",
-  projectId: "deliverytrackerapp-bc126",
-  storageBucket: "deliverytrackerapp-bc126.firebasestorage.app",
-  messagingSenderId: "712568086271",
-  appId: "1:712568086271:web:67374d044a7e22536cf6ca"
-};
+if (!admin.apps.length) {
+  admin.initializeApp({
+    credential: admin.credential.applicationDefault()
+  });
+}
 
-const app = initializeApp(firebaseConfig);
-export const db = getFirestore(app);
+export const db = admin.firestore();
