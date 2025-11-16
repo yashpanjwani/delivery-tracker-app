@@ -1,12 +1,19 @@
-// server/index.js
 import express from "express";
 import cors from "cors";
 import { db } from "./firebase-key.js";
 
 const app = express();
 
-app.use(cors());
-app.options("*", cors());
+// 🔥 CHANGE #1 — Add specific CORS config
+app.use(cors({
+  origin: [
+    "http://localhost:3000", 
+    "https://your-vercel-app.vercel.app"   // 🔥 replace this after Vercel deploy
+  ],
+  methods: ["GET", "POST", "PUT", "DELETE"],
+  credentials: true
+}));
+
 app.use(express.json());
 
 // GET all orders
@@ -65,5 +72,11 @@ app.put("/orders/:id", async (req, res) => {
   }
 });
 
-// export app for Vercel
+// 🔥 CHANGE #2 — Add proper PORT for Render (REQUIRED)
+const PORT = process.env.PORT || 5000;
+
+app.listen(PORT, () => {
+  console.log(`🚀 Server running on port ${PORT}`);
+});
+
 export default app;
