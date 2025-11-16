@@ -28,8 +28,6 @@ app.get("/orders", async (req, res) => {
 // CREATE new order
 app.post("/orders", async (req, res) => {
   try {
-    console.log("Received body:", req.body);
-
     const { name, item } = req.body;
 
     const docRef = await addDoc(collection(db, "orders"), {
@@ -61,6 +59,5 @@ app.put("/orders/:id", async (req, res) => {
   }
 });
 
-app.listen(5000, () =>
-  console.log("🔥 Backend server running at http://localhost:5000")
-);
+// ❗ DO NOT use app.listen() — Vercel handles this automatically
+export default app;
