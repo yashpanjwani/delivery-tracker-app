@@ -12,11 +12,13 @@ app.get("/", (req, res) => {
 app.use(cors({
   origin: [
     "http://localhost:3000",
-    "https://delivery-tracker-app-nine.vercel.app"  // ← your real Vercel domain
+    "https://delivery-tracker-app-nine.vercel.app",
+    "https://delivery-tracker-app-git-main-yashpanjwanis-projects.vercel.app"
   ],
   methods: ["GET", "POST", "PUT", "DELETE"],
   credentials: true
 }));
+
 
 app.use(express.json());
 
