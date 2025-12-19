@@ -7,7 +7,7 @@ import OrderList from "./OrderList";
 function App() {
   return (
     <div style={{ textAlign: "center" }}>
-      <h1>🚗 Delivery Tracker Frontend</h1>
+      <h1>🚀 OrderFlow</h1>
       <OrderForm />
       <OrderList />
     </div>
